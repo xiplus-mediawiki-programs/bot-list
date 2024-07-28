@@ -2,15 +2,14 @@
 import json
 import os
 import re
+import sys
 from collections import defaultdict
-from datetime import datetime
 from functools import cmp_to_key
 
 os.environ['PYWIKIBOT_DIR'] = os.path.dirname(os.path.realpath(__file__))
 import pywikibot
-from pywikibot.data.api import Request
-
 from config import config_page_name  # pylint: disable=E0611,W0614
+from pywikibot.data.api import Request
 
 os.environ['TZ'] = 'UTC'
 
@@ -154,9 +153,9 @@ page = pywikibot.Page(site, cfg['page'])
 try:
     idx1 = page.text.index(cfg['flag1']) + len(cfg['flag1'])
     idx2 = page.text.index(cfg['flag2'])
-except Exception:
+except KeyError:
     print('Cannot find position to insert table')
-    exit()
+    sys.exit()
 
 newtext = page.text[:idx1] + text + page.text[idx2:]
 
